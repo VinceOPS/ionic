@@ -16,6 +16,7 @@ function($scope, $attrs, $ionicSideMenuDelegate, $ionicPlatform, $ionicBody, $io
   var enableMenuWithBackViews = true;
 
   self.$scope = $scope;
+  self.forceMenuStates = $scope.$eval($attrs.forceMenuStates) || [];
 
   self.initialize = function(options) {
     self.left = options.left;
@@ -397,6 +398,12 @@ function($scope, $attrs, $ionicSideMenuDelegate, $ionicPlatform, $ionicBody, $io
     var menuEnabled = enableMenuWithBackViews ? true : !backView;
     if (!menuEnabled) {
       var currentView = $ionicHistory.currentView() || {};
+
+      if (self.forceMenuStates.indexOf(currentView.stateName) !== -1) {
+        console.log(currentView);
+        return true;
+      }
+
       return (dragIsWithinBounds && (backView.historyId !== currentView.historyId));
     }
 
