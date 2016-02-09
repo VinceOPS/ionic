@@ -118,6 +118,7 @@ function($animate, $timeout, $compile) {
 
         $scope.$on('$destroy', function() {
           slider.destroy();
+          _this.__slider = null;
         });
       });
 
