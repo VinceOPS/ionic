@@ -16,7 +16,6 @@ function($scope, $attrs, $ionicSideMenuDelegate, $ionicPlatform, $ionicBody, $io
   var enableMenuWithBackViews = true;
 
   self.$scope = $scope;
-  self.forceMenuStates = $scope.$eval($attrs.forceMenuStates) || [];
 
   self.initialize = function(options) {
     self.left = options.left;
@@ -399,9 +398,7 @@ function($scope, $attrs, $ionicSideMenuDelegate, $ionicPlatform, $ionicBody, $io
     if (!menuEnabled) {
       var currentView = $ionicHistory.currentView() || {};
 
-      if (self.forceMenuStates.indexOf(currentView.stateName) !== -1) {
-        // do not let the user swipe back, as he's already swiping to open the menu
-        currentView.canSwipeBack = false;
+      if (currentView.forceSideMenu) {
         return true;
       }
 
