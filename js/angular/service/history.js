@@ -285,7 +285,6 @@ function($rootScope, $state, $location, $window, $timeout, $ionicViewSwitcher, $
         // create an element from the viewLocals template
         ele = $ionicViewSwitcher.createViewEle(viewLocals);
         if (this.isAbstractEle(ele, viewLocals)) {
-          console.log('VIEW', 'abstractView', DIRECTION_NONE, viewHistory.currentView);
           return {
             action: 'abstractView',
             direction: DIRECTION_NONE,
@@ -360,7 +359,8 @@ function($rootScope, $state, $location, $window, $timeout, $ionicViewSwitcher, $
           stateName: this.currentStateName(),
           stateParams: getCurrentStateParams(),
           url: url,
-          canSwipeBack: canSwipeBack(ele, viewLocals)
+          canSwipeBack: canSwipeBack(ele, viewLocals),
+          forceSideMenu: forceSideMenu(ele)
         });
 
         // add the new view to this history's stack
@@ -405,8 +405,6 @@ function($rootScope, $state, $location, $window, $timeout, $ionicViewSwitcher, $
           }
         }
       }
-
-      console.log('VIEW', action, direction, viewHistory.currentView);
 
       hist.cursor = viewHistory.currentView.index;
 
@@ -763,10 +761,17 @@ function($rootScope, $state, $location, $window, $timeout, $ionicViewSwitcher, $
     if (viewLocals && viewLocals.$$state && viewLocals.$$state.self.canSwipeBack === false) {
       return false;
     }
-    if (ele && ele.attr('can-swipe-back') === 'false') {
-      return false;
+
+    if (!ele) {
+      return true;
     }
-    return true;
+
+    // do not swipe back when side menu is enabled by force or when swipe back is disabled
+    return !(ele.attr('force-side-menu') === 'true' || ele.attr('can-swipe-back') === 'false');
+  }
+
+  function forceSideMenu(ele) {
+    return ele && ele.attr('force-side-menu') === 'true';
   }
 
 }])
