@@ -400,7 +400,8 @@ function($scope, $attrs, $ionicSideMenuDelegate, $ionicPlatform, $ionicBody, $io
       var currentView = $ionicHistory.currentView() || {};
 
       if (self.forceMenuStates.indexOf(currentView.stateName) !== -1) {
-        console.log(currentView);
+        // do not let the user swipe back, as he's already swiping to open the menu
+        currentView.canSwipeBack = false;
         return true;
       }
 
