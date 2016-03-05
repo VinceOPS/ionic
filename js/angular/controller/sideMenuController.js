@@ -398,7 +398,20 @@ function($scope, $attrs, $ionicSideMenuDelegate, $ionicPlatform, $ionicBody, $io
     if (!menuEnabled) {
       var currentView = $ionicHistory.currentView() || {};
 
+      // side menu is enabled by force (ionicView force-side-menu="true")
       if (currentView.forceSideMenu) {
+        var parentItem = ionic.DomUtil.getParentOrSelfWithClass(e.target, 'item-complex', 5);
+
+        // check if user is dragging a ion-item with ion-option-buttons (has class 'item-complex')
+        if (parentItem) {
+          var itemContentTransform = parentItem.querySelector('.item-content').style.transform;
+
+          // if option buttons are open (translate3d of X-axis != 0): do not open side menu
+          if (itemContentTransform && itemContentTransform.indexOf('translate3d(0px') === -1) {
+            return false;
+          }
+        }
+
         return true;
       }
 
