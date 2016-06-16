@@ -536,9 +536,12 @@ IonicModule
 
       ctrl.setCss('buttons-left', css);
       ctrl.setCss('buttons-right', css);
+
+      /* Avoid dummy flickering
       ctrl.setCss('back-button', css);
       ctrl.setCss('back-text', css);
       ctrl.setCss('title', css);
+      */
     }
 
     return {
