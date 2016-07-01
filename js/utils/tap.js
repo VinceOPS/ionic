@@ -522,6 +522,20 @@ function tapHandleFocus(ele) {
       tapTouchFocusedInput = ele;
     }
 
+  } else if (ele.attributes && ele.attributes['on-tap-focus-in']) {
+      var nodeId = '#' + ele.attributes['on-tap-focus-in'].nodeValue;
+      var focusInEle = document.querySelector(nodeId);
+
+      if (focusInEle) {
+        triggerFocusIn = true;
+        // update tapped 'ele' to trigger ionic.focusin (see below)
+        ele = focusInEle;
+        ele.focus && ele.focus();
+
+        if (tapEnabledTouchEvents) {
+          tapTouchFocusedInput = ele;
+        }
+      }
   } else {
     tapFocusOutActive();
   }
