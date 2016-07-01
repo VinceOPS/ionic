@@ -195,11 +195,18 @@ ionic.tap = {
   },
 
   cloneFocusedInput: function(container) {
+    var focusInput = container.querySelector(':focus');
+
+    if (focusInput &&
+        focusInput.attributes &&
+        focusInput.attributes['not-clonable-input']) {
+          return;
+    }
+
     if (ionic.tap.hasCheckedClone) return;
     ionic.tap.hasCheckedClone = true;
 
     ionic.requestAnimationFrame(function() {
-      var focusInput = container.querySelector(':focus');
       if (ionic.tap.isTextInput(focusInput) && !ionic.tap.isDateInput(focusInput)) {
         var clonedInput = focusInput.cloneNode(true);
 
