@@ -78,8 +78,13 @@ function($document, $timeout, $$rAF, $rootScope) {
     _element: el
   };
 
-  function retain() {
+  function retain(cssClass) {
     backdropHolds++;
+
+    if (cssClass) {
+      el.addClass(cssClass);
+    }
+
     if (backdropHolds === 1) {
       el.addClass('visible');
       $rootScope.$broadcast('backdrop.shown');
@@ -89,7 +94,11 @@ function($document, $timeout, $$rAF, $rootScope) {
       });
     }
   }
-  function release() {
+  function release(cssClass) {
+    if (cssClass) {
+      el.removeClass(cssClass);
+    }
+
     if (backdropHolds === 1) {
       el.removeClass('active');
       $rootScope.$broadcast('backdrop.hidden');

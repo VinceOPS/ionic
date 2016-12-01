@@ -51,7 +51,7 @@
  * - Works with labels surrounding inputs
  * - Does not fire off a click if the user moves the pointer too far
  * - Adds and removes an 'activated' css class
- * - Multiple [unit tests](https://github.com/driftyco/ionic/blob/master/test/unit/utils/tap.unit.js) for each scenario
+ * - Multiple [unit tests](https://github.com/driftyco/ionic/blob/1.x/test/unit/utils/tap.unit.js) for each scenario
  *
  */
 /*
@@ -195,11 +195,18 @@ ionic.tap = {
   },
 
   cloneFocusedInput: function(container) {
+    var focusInput = container.querySelector(':focus');
+
+    if (focusInput &&
+        focusInput.attributes &&
+        focusInput.attributes['not-clonable-input']) {
+          return;
+    }
+
     if (ionic.tap.hasCheckedClone) return;
     ionic.tap.hasCheckedClone = true;
 
     ionic.requestAnimationFrame(function() {
-      var focusInput = container.querySelector(':focus');
       if (ionic.tap.isTextInput(focusInput) && !ionic.tap.isDateInput(focusInput)) {
         var clonedInput = focusInput.cloneNode(true);
 
@@ -262,7 +269,7 @@ ionic.tap = {
     if (ele && ele.nodeType === 1) {
       var element = ele;
       while (element) {
-        if ((element.dataset ? element.dataset.tapDisabled : element.getAttribute && element.getAttribute('data-tap-disabled')) == 'true') {
+        if (element.getAttribute && element.getAttribute('data-tap-disabled') == 'true') {
           return true;
         }
         element = element.parentElement;
@@ -515,6 +522,20 @@ function tapHandleFocus(ele) {
       tapTouchFocusedInput = ele;
     }
 
+  } else if (ele.attributes && ele.attributes['on-tap-focus-in']) {
+      var nodeId = '#' + ele.attributes['on-tap-focus-in'].nodeValue;
+      var focusInEle = document.querySelector(nodeId);
+
+      if (focusInEle) {
+        triggerFocusIn = true;
+        // update tapped 'ele' to trigger ionic.focusin (see below)
+        ele = focusInEle;
+        ele.focus && ele.focus();
+
+        if (tapEnabledTouchEvents) {
+          tapTouchFocusedInput = ele;
+        }
+      }
   } else {
     tapFocusOutActive();
   }
