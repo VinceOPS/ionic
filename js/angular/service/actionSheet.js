@@ -122,6 +122,10 @@ function($rootScope, $compile, $animate, $timeout, $ionicTemplateLoader, $ionicP
     // Grab the sheet element for animation
     var sheetEl = jqLite(element[0].querySelector('.action-sheet-wrapper'));
 
+    if (scope.cssClass) {
+      sheetEl.addClass(scope.cssClass);
+    }
+
     var stateChangeListenDone = scope.cancelOnStateChange ?
       $rootScope.$on('$stateChangeSuccess', function() { scope.cancel(); }) :
       noop;
