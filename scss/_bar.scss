@@ -380,7 +380,7 @@
 
 .bar-subheader {
   top: $bar-height;
-
+  display: block;
   height: $bar-subheader-height;
 
   .title {
