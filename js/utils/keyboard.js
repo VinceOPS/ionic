@@ -344,6 +344,11 @@ function keyboardFocusIn(e) {
     } else {
       document.addEventListener('touchmove', keyboardPreventDefault, false);
     }
+  } else {
+    // native scrolling + browser: force keyboardHeight to "0"
+    if (cordova && cordova.platformId === 'browser') {
+      ionic.keyboard.height = 0;
+    }
   }
 
   if (!ionic.keyboard.isOpen || ionic.keyboard.isClosing) {
@@ -367,7 +372,7 @@ function keyboardFocusIn(e) {
   if (!ionic.keyboard.isOpen && !keyboardHasPlugin()) {
     keyboardWaitForResize(keyboardShow, true);
 
-  } else if (ionic.keyboard.isOpen) {
+  } else if (ionic.keyboard.isOpen || (cordova && cordova.platformId === 'browser')) {
     keyboardShow();
   }
 }
@@ -515,7 +520,7 @@ function keyboardWaitForResize(callback, isOpening) {
     if (++count < maxCount &&
         ((!isPortraitViewportHeight(viewportHeight) &&
          !isLandscapeViewportHeight(viewportHeight)) ||
-         !ionic.keyboard.height)) {
+          isNaN(ionic.keyboard.height))) {
       return;
     }
 
@@ -631,7 +636,7 @@ function keyboardShow() {
 /* eslint no-unused-vars:0 */
 function keyboardGetHeight() {
   // check if we already have a keyboard height from the plugin or resize calculations
-  if (ionic.keyboard.height) {
+  if (!isNaN(ionic.keyboard.height) && ionic.keyboard.height >= 0) {
     return ionic.keyboard.height;
   }
 
