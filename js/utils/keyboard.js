@@ -210,11 +210,11 @@ ionic.keyboard = {
    * keyboard adjustments.
    */
   disable: function() {
-    if (keyboardHasPlugin()) {
+    if (!keyboardHasPlugin() || (cordova && cordova.platformId === 'browser')) {
+      document.body.removeEventListener('focusout', keyboardFocusOut);
+    } else if (keyboardHasPlugin()) {
       window.removeEventListener('native.keyboardshow', debouncedKeyboardNativeShow );
       window.removeEventListener('native.keyboardhide', keyboardFocusOut);
-    } else {
-      document.body.removeEventListener('focusout', keyboardFocusOut);
     }
 
     document.body.removeEventListener('ionic.focusin', debouncedKeyboardFocusIn);
@@ -254,11 +254,11 @@ function keyboardInit() {
 
   if (ionic.keyboard.isInitialized) return;
 
-  if (keyboardHasPlugin()) {
-    window.addEventListener('native.keyboardshow', debouncedKeyboardNativeShow);
-    window.addEventListener('native.keyboardhide', keyboardFocusOut);
-  } else {
+  if (!keyboardHasPlugin() || (cordova && cordova.platformId === 'browser')) {
     document.body.addEventListener('focusout', keyboardFocusOut);
+  } else if (keyboardHasPlugin()) {
+    window.addEventListener('native.keyboardshow', debouncedKeyboardNativeShow );
+    window.addEventListener('native.keyboardhide', keyboardFocusOut);
   }
 
   document.body.addEventListener('ionic.focusin', debouncedKeyboardFocusIn);
