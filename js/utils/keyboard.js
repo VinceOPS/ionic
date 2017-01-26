@@ -210,7 +210,8 @@ ionic.keyboard = {
    * keyboard adjustments.
    */
   disable: function() {
-    if (!keyboardHasPlugin() || (cordova && cordova.platformId === 'browser')) {
+    if (!keyboardHasPlugin() || 
+        (window.cordova && window.cordova.platformId === 'browser')) {
       document.body.removeEventListener('focusout', keyboardFocusOut);
     } else if (keyboardHasPlugin()) {
       window.removeEventListener('native.keyboardshow', debouncedKeyboardNativeShow );
@@ -254,7 +255,8 @@ function keyboardInit() {
 
   if (ionic.keyboard.isInitialized) return;
 
-  if (!keyboardHasPlugin() || (cordova && cordova.platformId === 'browser')) {
+  if (!keyboardHasPlugin() || 
+      (window.cordova && window.cordova.platformId === 'browser')) {
     document.body.addEventListener('focusout', keyboardFocusOut);
   } else if (keyboardHasPlugin()) {
     window.addEventListener('native.keyboardshow', debouncedKeyboardNativeShow );
@@ -346,7 +348,7 @@ function keyboardFocusIn(e) {
     }
   } else {
     // native scrolling + browser: force keyboardHeight to "0"
-    if (cordova && cordova.platformId === 'browser') {
+    if (window.cordova && window.cordova.platformId === 'browser') {
       ionic.keyboard.height = 0;
     }
   }
@@ -372,7 +374,8 @@ function keyboardFocusIn(e) {
   if (!ionic.keyboard.isOpen && !keyboardHasPlugin()) {
     keyboardWaitForResize(keyboardShow, true);
 
-  } else if (ionic.keyboard.isOpen || (cordova && cordova.platformId === 'browser')) {
+  } else if (ionic.keyboard.isOpen ||
+            (window.cordova && window.cordova.platformId === 'browser')) {
     keyboardShow();
   }
 }
