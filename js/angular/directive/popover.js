@@ -9,7 +9,7 @@ IonicModule
     transclude: true,
     replace: true,
     controller: [function() {}],
-    template: '<div class="popover-backdrop">' +
+    template: '<div class="popover-backdrop" on-tap-keep-keyboard>' +
                 '<div class="popover-wrapper" ng-transclude></div>' +
               '</div>'
   };
