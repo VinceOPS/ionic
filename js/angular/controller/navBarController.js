@@ -364,7 +364,10 @@ function($scope, $element, $attrs, $compile, $timeout, $ionicNavBarDelegate, $io
       $element.removeClass(CSS_HIDE);
       self.align();
     } else if (!shouldShow && isVisible) {
-      $element.addClass(CSS_HIDE);
+      setTimeout(function() {
+        // delay the bar hiding to avoid flickering
+        $element.addClass(CSS_HIDE);
+      }, 100);
     }
     isVisible = shouldShow;
   };
