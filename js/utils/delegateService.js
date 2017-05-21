@@ -26,9 +26,10 @@
        * that will only try to fetch the controller with given handle
        * once the methods are actually called.
        */
-      function DelegateInstance(instances, handle) {
+      function DelegateInstance(instances, handle, disableActiveScopeFilter) {
         this._instances = instances;
         this.handle = handle;
+        this.disableActiveScopeFilter = !!disableActiveScopeFilter;
       }
       methodNames.forEach(function(methodName) {
         DelegateInstance.prototype[methodName] = instanceMethodCaller(methodName);
@@ -57,8 +58,8 @@
           }
         };
       };
-      DelegateService.prototype.$getByHandle = function(handle) {
-        return new DelegateInstance(this._instances, handle);
+      DelegateService.prototype.$getByHandle = function(handle, disableActiveScopeFilter) {
+        return new DelegateInstance(this._instances, handle, disableActiveScopeFilter);
       };
 
       return new DelegateService();
@@ -69,9 +70,11 @@
           var args = arguments;
           var foundInstancesCount = 0;
           var returnValue;
+          var disableActiveScopeFilter = this.disableActiveScopeFilter;
 
           this._instances.forEach(function(instance) {
-            if ((!handle || handle == instance.$$delegateHandle) && instance.$$filterFn(instance)) {
+            if ((!handle || handle == instance.$$delegateHandle) &&
+                (instance.$$filterFn(instance) || disableActiveScopeFilter)) {
               foundInstancesCount++;
               var ret = instance[methodName].apply(instance, args);
               //Only return the value from the first call
