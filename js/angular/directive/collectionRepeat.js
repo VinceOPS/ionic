@@ -233,10 +233,14 @@ function CollectionRepeatDirective($ionicCollectionManager, $parse, $window, $$r
         scrollView.__content.querySelector('.collection-repeat-after-container')
       );
       // Put everything in the view after the repeater into a container.
-      if (!container.length) {
+      if (!container.length &&
+          containerNode.parentNode &&
+          containerNode.parentNode.childNodes &&
+          containerNode.parentNode.childNodes.length > 1) {
         var elementIsAfterRepeater = false;
-        var afterNodes = [].filter.call(scrollView.__content.childNodes, function(node) {
+        var afterNodes = [].filter.call(containerNode.parentNode.childNodes, function(node) {
           if (ionic.DomUtil.contains(node, containerNode)) {
+            // we found a node containing the repeater: next nodes are necessarily "after" it
             elementIsAfterRepeater = true;
             return false;
           }
@@ -984,8 +988,5 @@ function RepeatManagerFactory($rootScope, $window, $$rAF) {
         oldRenderStartIndex = renderStartIndex;
       };
     }
-
-
   };
-
 }
