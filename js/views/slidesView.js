@@ -537,6 +537,16 @@
         };
 
         /*=========================
+          Enable, disable Touch
+          ===========================*/
+        s.disableTouch = function() {
+            s.params.disableTouch = true;
+        };
+        s.enableTouch = function() {
+            s.params.disableTouch = false;
+        };
+
+        /*=========================
           Round helper
           ===========================*/
         function round(a) {
