@@ -71,7 +71,8 @@ function($timeout, $controller, $ionicBind, $ionicConfig) {
         element.addClass('scroll-content-false');
       }
 
-      var nativeScrolling = attr.overflowScroll !== "false" && (attr.overflowScroll === "true" || !$ionicConfig.scrolling.jsScrolling());
+      var isJsScrollingEnabled = $ionicConfig.scrolling.jsScrolling();
+      var nativeScrolling = attr.overflowScroll !== "false" && (attr.overflowScroll === "true" || !isJsScrollingEnabled);
 
       // collection-repeat requires JS scrolling
       if (nativeScrolling) {
@@ -121,6 +122,12 @@ function($timeout, $controller, $ionicBind, $ionicConfig) {
           //do nothing
         } else {
           var scrollViewOptions = {};
+
+          if (attr.overflowScroll &&
+              attr.overflowScroll !== "false" &&
+              attr.overflowScroll !== "true") {
+              nativeScrolling = $scope.$eval(attr.overflowScroll) || !isJsScrollingEnabled;
+          }
 
           // determined in compile phase above
           if (nativeScrolling) {
