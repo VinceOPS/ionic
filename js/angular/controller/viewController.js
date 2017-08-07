@@ -34,6 +34,8 @@ function($scope, $element, $attrs, $compile, $rootScope) {
     $scope.$on('$ionicView.beforeEnter', self.beforeEnter);
     $scope.$on('$ionicView.afterEnter', afterEnter);
     $scope.$on('$ionicView.beforeLeave', deregisterFns);
+
+    $scope.$broadcast('$ionicView.listeningReady');
   };
 
   self.beforeEnter = function(ev, transData) {

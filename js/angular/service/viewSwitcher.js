@@ -344,6 +344,11 @@ function($timeout, $document, $q, $ionicClickBlock, $ionicConfig, $ionicNavBarDe
             if (enteringScope) {
               enteringScope.$emit('$ionicView.' + step + 'Enter', enteringData);
               enteringScope.$broadcast('$ionicParentView.' + step + 'Enter', enteringData);
+
+              var offListeningReady = enteringScope.$on('$ionicView.listeningReady', function() {
+                enteringScope.$emit('$ionicView.' + step + 'Enter', enteringData);
+                offListeningReady();
+              });
             }
 
             if (leavingScope) {
