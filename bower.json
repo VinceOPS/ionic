@@ -51,6 +51,6 @@
     "angular": "1.6.5",
     "angular-animate": "1.6.5",
     "angular-sanitize": "1.6.5",
-    "angular-ui-router": "0.2.13"
+    "angular-ui-router": "0.2.18"
   }
 }
