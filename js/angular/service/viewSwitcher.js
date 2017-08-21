@@ -299,7 +299,11 @@ function($timeout, $document, $q, $ionicClickBlock, $ionicConfig, $ionicNavBarDe
         },
 
       emit: function(step, enteringData, leavingData) {
-          var enteringScope = getScopeForElement(enteringEle, enteringData);
+          var self = this;
+          var isComponent = viewLocals.$$state &&
+                          viewLocals.$$state.self &&
+                          viewLocals.$$state.self.component;
+          var enteringScope = getScopeForElement(enteringEle, enteringData, isComponent);
           var leavingScope = getScopeForElement(leavingEle, leavingData);
 
           var prefixesAreEqual;
@@ -555,7 +559,7 @@ function($timeout, $document, $q, $ionicClickBlock, $ionicConfig, $ionicNavBarDe
     return enteringPrefix === exitingPrefix;
   }
 
-  function getScopeForElement(element, stateData) {
+  function getScopeForElement(element, stateData, isComponent) {
     if ( !element ) {
       return null;
     }
@@ -569,6 +573,10 @@ function($timeout, $document, $q, $ionicClickBlock, $ionicConfig, $ionicNavBarDe
       // sometimes it doesn't. If it doesn't, don't dispatch events
       // so leave the scope undefined
       if ( stateValue === stateData.stateName ) {
+        if (isComponent) {
+            return angular.element(element).isolateScope();
+        }
+
         return angular.element(element).scope();
       }
       return null;
