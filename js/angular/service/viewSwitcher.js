@@ -306,6 +306,13 @@ function($timeout, $document, $q, $ionicClickBlock, $ionicConfig, $ionicNavBarDe
           var enteringScope = getScopeForElement(enteringEle, enteringData, isComponent);
           var leavingScope = getScopeForElement(leavingEle, leavingData);
 
+          if (isComponent && !enteringScope) {
+            setTimeout(function() {
+              self.emit(step, enteringData, leavingData);
+            });
+            return;
+          }
+
           var prefixesAreEqual;
 
           if ( !enteringData.viewId || enteringData.abstractView ) {
