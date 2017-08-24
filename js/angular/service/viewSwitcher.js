@@ -298,7 +298,7 @@ function($timeout, $document, $q, $ionicClickBlock, $ionicConfig, $ionicNavBarDe
 
         },
 
-      emit: function(step, enteringData, leavingData) {
+      emit: function(step, enteringData, leavingData, retryCount) {
           var self = this;
           var isComponent = viewLocals.$$state &&
                           viewLocals.$$state.self &&
@@ -307,8 +307,15 @@ function($timeout, $document, $q, $ionicClickBlock, $ionicConfig, $ionicNavBarDe
           var leavingScope = getScopeForElement(leavingEle, leavingData);
 
           if (isComponent && !enteringScope) {
+            if (retryCount > 10) {
+              // avoid reaching call stack size limitation
+              return;
+            }
+
+            retryCount = retryCount || 0;
+
             setTimeout(function() {
-              self.emit(step, enteringData, leavingData);
+              self.emit(step, enteringData, leavingData, ++retryCount);
             });
             return;
           }
