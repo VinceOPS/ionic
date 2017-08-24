@@ -11,16 +11,23 @@ IonicModule
 /**
  * @private
  */
-.factory('$ionicNgClick', ['$parse', function($parse) {
+.factory('$ionicNgClick', ['$parse', '$timeout', function($parse, $timeout) {
   return function(scope, element, clickExpr) {
     var clickHandler = angular.isFunction(clickExpr) ?
       clickExpr :
       $parse(clickExpr);
 
     element.on('click', function(event) {
-      scope.$apply(function() {
+      var clickCallback = function() {
         clickHandler(scope, {$event: (event)});
-      });
+      };
+
+      if (!scope.$$phase) {
+        scope.$apply(clickCallback);
+      } else {
+        // it happens on iOS 10... see ionic-team/ionic issues#6634
+        $timeout(clickCallback);
+      }
     });
 
     // Hack for iOS Safari's benefit. It goes searching for onclick handlers and is liable to click
