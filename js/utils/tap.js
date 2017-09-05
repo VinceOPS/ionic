@@ -228,6 +228,10 @@ ionic.tap = {
   hasCheckedClone: false,
 
   removeClonedInputs: function(container) {
+    if (!container) {
+      return;
+    }
+
     ionic.tap.hasCheckedClone = false;
 
     ionic.requestAnimationFrame(function() {
