@@ -308,7 +308,9 @@ function($scope, $element, $attrs, $compile, $timeout, $ionicNavBarDelegate, $io
       navBarAttr(enteringHeaderBar, 'entering');
       navBarAttr(leavingHeaderBar, 'leaving');
 
-      navBarTransition.run(1);
+      if (navBarTransition && navBarTransition.run) {
+        navBarTransition.run(1);
+      }
 
       queuedTransitionEnd = function() {
         if (leavingHeaderBar) {
