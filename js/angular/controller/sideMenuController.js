@@ -396,6 +396,7 @@ function($scope, $attrs, $ionicSideMenuDelegate, $ionicPlatform, $ionicBody, $io
       // side menu is enabled by force (ionicView force-side-menu="true")
       if (currentView.forceSideMenu) {
         var parentItem = ionic.DomUtil.getParentOrSelfWithClass(e.target, 'item-complex', 5);
+        var parentToggle = ionic.DomUtil.getParentOrSelfWithClass(e.target, 'item-toggle', 5);
 
         // check if user is dragging a ion-item with ion-option-buttons (has class 'item-complex')
         if (parentItem) {
@@ -405,6 +406,8 @@ function($scope, $attrs, $ionicSideMenuDelegate, $ionicPlatform, $ionicBody, $io
           if (itemContentTransform && itemContentTransform.indexOf('translate3d(0px') === -1) {
             return false;
           }
+        } else if (parentToggle) {
+          return false;
         }
 
         return true;
