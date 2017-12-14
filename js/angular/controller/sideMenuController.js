@@ -394,7 +394,7 @@ function($scope, $attrs, $ionicSideMenuDelegate, $ionicPlatform, $ionicBody, $io
       var currentView = $ionicHistory.currentView() || {};
 
       // side menu is enabled by force (ionicView force-side-menu="true")
-      if (currentView.forceSideMenu) {
+      if (currentView.forceSideMenu()) {
         var parentItem = ionic.DomUtil.getParentOrSelfWithClass(e.target, 'item-complex', 5);
         var parentToggle = ionic.DomUtil.getParentOrSelfWithClass(e.target, 'item-toggle', 5);
 

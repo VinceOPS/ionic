@@ -371,7 +371,9 @@ function($rootScope, $state, $location, $window, $timeout, $ionicViewSwitcher, $
           stateParams: getCurrentStateParams(),
           url: url,
           canSwipeBack: canSwipeBack(ele, viewLocals),
-          forceSideMenu: forceSideMenu(ele)
+          forceSideMenu: function() {
+            return ele && ele.attr('force-side-menu') === 'true';
+          }
         });
 
         // add the new view to this history's stack
@@ -811,11 +813,6 @@ function($rootScope, $state, $location, $window, $timeout, $ionicViewSwitcher, $
     // do not swipe back when side menu is enabled by force or when swipe back is disabled
     return !(ele.attr('force-side-menu') === 'true' || ele.attr('can-swipe-back') === 'false');
   }
-
-  function forceSideMenu(ele) {
-    return ele && ele.attr('force-side-menu') === 'true';
-  }
-
 }])
 
 .run([
