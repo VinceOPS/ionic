@@ -168,7 +168,7 @@ function($rootScope, $ionicBody, $compile, $timeout, $ionicPlatform, $ionicTempl
 
       self._isShown = true;
       self._deregisterBackButton = $ionicPlatform.registerBackButtonAction(
-        self.hardwareBackButtonClose ? angular.bind(self, self.hide) : noop,
+        self.hardwareBackButtonClose ? angular.bind(self, self.onBackButton) : noop,
         IONIC_BACK_PRIORITY.modal
       );
 
@@ -201,6 +201,22 @@ function($rootScope, $ionicBody, $compile, $timeout, $ionicPlatform, $ionicTempl
           }
         });
       }, 400);
+    },
+
+    /**
+     * @ngdoc method
+     * @name ionicModal#onBackButton
+     * @description Called when "hardware back button" event is triggered. Will
+     * ask the modal to hide, if it's visible/active.
+     * @returns {promise} A promise which is resolved when the modal is finished animating out.
+     */
+    onBackButton: function() {
+      var self = this;
+
+      if (self.el && self.el.classList &&
+          self.el.classList.contains('active')) {
+        return self.hide();
+      }
     },
 
     /**
