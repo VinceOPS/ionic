@@ -261,7 +261,11 @@ function($rootScope, $ionicBody, $compile, $timeout, $ionicPlatform, $ionicTempl
         var otherSibling = false;
 
         for (var i = 0; i < modalStack.length; ++i) {
-          if (modalStack[i].viewType === self.viewType) {
+          if (modalStack[i].viewType === self.viewType &&
+              // if modal is not active, it doesn't "count"
+              modalStack[i].el &&
+              modalStack[i].el.classList &&
+              modalStack[i].el.classList.contains('active')) {
             otherSibling = true;
             break;
           }
@@ -352,7 +356,7 @@ function($rootScope, $ionicBody, $compile, $timeout, $ionicPlatform, $ionicTempl
   var stack = {
     add: function(modal) {
       if (modalStack.indexOf(modal) === -1) {
-      modalStack.push(modal);
+        modalStack.push(modal);
       }
     },
     remove: function(modal) {
