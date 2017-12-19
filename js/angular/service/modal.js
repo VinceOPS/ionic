@@ -351,7 +351,9 @@ function($rootScope, $ionicBody, $compile, $timeout, $ionicPlatform, $ionicTempl
   var modalStack = [];
   var stack = {
     add: function(modal) {
+      if (modalStack.indexOf(modal) === -1) {
       modalStack.push(modal);
+      }
     },
     remove: function(modal) {
       var index = modalStack.indexOf(modal);
