@@ -648,7 +648,7 @@ ionic.views.Scroll = ionic.views.View.inherit({
      * focused input is below the bottom of the shrunk scroll view, scroll it
      * into view.
      */
-    self.scrollChildIntoView = function(e) {
+    self.scrollChildIntoView = ionic.throttle(function(e) {
       //console.log("scrollChildIntoView at: " + Date.now());
 
       // D
@@ -749,7 +749,7 @@ ionic.views.Scroll = ionic.views.View.inherit({
       // Only the first scrollView parent of the element that broadcasted this event
       // (the active element that needs to be shown) should receive this event
       e.stopPropagation();
-    };
+    }, 600, {trailing: false});
 
     self.resetScrollView = function() {
       //return scrollview to original height once keyboard has hidden
