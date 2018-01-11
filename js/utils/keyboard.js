@@ -615,15 +615,27 @@ function keyboardShow() {
     details.elementTop = Math.round(elementBounds.top);
     details.elementBottom = Math.round(elementBounds.bottom);
 
+    // when determining if the element is under the keyboard,
+    // let's also check if it's under a ion-footer-bar attached to the keyboard (if any)
+    var elementBottomOffset = 0;
+    var attachedFooters = document.querySelectorAll('ion-footer-bar[keyboard-attach]');
+    for (var attachedFooter of attachedFooters) {
+      // if keyboard element is partially or completely under the keyboard-attach(ed) footer
+      if (details.elementBottom > attachedFooter.offsetTop) {
+        var elementHeight = Math.abs(details.elementBottom - details.elementTop);
+        // add some offset to the comparison of positionss
+        elementBottomOffset = attachedFooter.offsetHeight || elementHeight + (details.elementBottom - attachedFooter.offsetTop);
+        break;
+      }
+    }
+
     details.windowHeight = details.viewportHeight - details.keyboardHeight;
     //console.log("keyboardShow viewportHeight: " + details.viewportHeight +
     //", windowHeight: " + details.windowHeight +
     //", keyboardHeight: " + details.keyboardHeight);
 
     // figure out if the element is under the keyboard
-    details.isElementUnderKeyboard = (details.elementBottom > details.windowHeight);
-    //console.log("isUnderKeyboard: " + details.isElementUnderKeyboard);
-    //console.log("elementBottom: " + details.elementBottom);
+    details.isElementUnderKeyboard = (details.elementBottom + elementBottomOffset > details.windowHeight);
 
     // send event so the scroll view adjusts
     ionic.trigger('scrollChildIntoView', details, true);
